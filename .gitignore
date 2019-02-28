@@ -1,2 +1,3 @@
 .idea/
 *.iml
+webapp/node_modules/*
