@@ -19,14 +19,22 @@ public class SecSecurityConfig
 		http.csrf().disable().authorizeRequests()
 			.antMatchers(
 				HttpMethod.GET,
-				"/index*", "/static/**", "/*.js", "/*.json", "/*.ico")
+				"/index*", "/static/**", "/*.js", "/*.json", "/*.ico"
+			)
 			.permitAll()
-			.anyRequest().authenticated()
+			.and()
+			.authorizeRequests()
+			.antMatchers(
+				HttpMethod.POST,
+				"/user"
+			).permitAll()
+			.anyRequest()
+			.authenticated()
 			.and()
 			.formLogin()
 			.loginPage("/index.html")
 			.loginProcessingUrl("/perform_login")
 			.defaultSuccessUrl("/homepage.html", true)
-			.failureUrl("/index.html?error=true");
+			.failureUrl("/index.html");
 	}
 }

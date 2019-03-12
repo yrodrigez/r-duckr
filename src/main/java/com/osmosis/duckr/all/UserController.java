@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("v{api.version}/user")
+@RequestMapping("user")
 public class UserController {
 
 	final private UserManager manager;
