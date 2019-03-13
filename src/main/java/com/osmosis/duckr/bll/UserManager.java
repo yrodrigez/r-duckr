@@ -22,12 +22,13 @@ public class UserManager {
 			throw new RuntimeException("This username is already taken");
 		}
 
-		return this.repository.save(user);
+		return this.repository.save(new User(user.getUsername(), user.getPassword(), user.email));
 	}
 
 	private boolean isUserRegistered(final User user) {
-			Optional<User> userOptional = this.repository.findByUsername(user);
+			Optional<User> byUsername = this.repository.findByUsername(user.getUsername());
+			Optional<User> byEmail = this.repository.findByEmail(user.email);
 
-			return userOptional.isPresent();
+			return byUsername.isPresent() || byEmail.isPresent();
 	}
 }

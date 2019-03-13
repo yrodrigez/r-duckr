@@ -16,7 +16,7 @@ import java.util.List;
 @Document
 public class User extends org.springframework.security.core.userdetails.User {
 	@Id
-	public String email = StringUtils.EMPTY;
+	public String email;
 
 	public LocalDateTime created;
 	public LocalDateTime lastLogin;
@@ -28,22 +28,25 @@ public class User extends org.springframework.security.core.userdetails.User {
 	public List<Comment> comments = new LinkedList<>();
 	public List<User> follows = new LinkedList<>();
 
+	public User() {
+		super("INVALID", "INVALID", new LinkedList<>());
+	}
+
 	@JsonCreator
 	public User(
-		@JsonProperty("username") final String username,
-		@JsonProperty("password")	final String password,
-		@JsonProperty("email") final String email
+		@JsonProperty("username") String username,
+		@JsonProperty("password") String password,
+		@JsonProperty("email") String email
 	) {
 		super(username, password, new LinkedList<>());
 		this.email = email;
-
 	}
 
-	public User(final String username, final String password, final Collection<? extends GrantedAuthority> authorities) {
+	public User(String username, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);
 	}
 
-	public User(final String username, final String password, final boolean enabled, final boolean accountNonExpired, final boolean credentialsNonExpired, final boolean accountNonLocked, final Collection<? extends GrantedAuthority> authorities) {
+	public User(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 	}
 }
