@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +38,25 @@ public class UserManager {
 		List<GrantedAuthority> authorityList = new LinkedList<>();
 		authorityList.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-		return this.repository.save(new User(user.getUsername(), user.getPassword(), user.email, authorityList));
+		final User newUser = new User(
+			user.getUsername(),
+			user.getPassword(),
+			user.email,
+			"",
+			LocalDateTime.now(),
+			LocalDateTime.MIN,
+			LocalDateTime.MIN,
+			new LinkedList<>(),
+			new LinkedList<>(),
+			new LinkedList<>(),
+			true,
+			true,
+			true,
+			true,
+			authorityList
+		);
+
+		return this.repository.save(newUser);
 	}
 
 	private boolean isUserRegistered(final User user) {

@@ -28,42 +28,12 @@ public class User extends org.springframework.security.core.userdetails.User imp
 	public List<Comment> comments = new LinkedList<>();
 	public List<User> follows = new LinkedList<>();
 
-	public User() {
-		super("INVALID", "INVALID", new LinkedList<>());
-	}
-
-	public User(
-		@JsonProperty("username") String username
-	) {
-		super(username, "INVALID", new LinkedList<>());
-	}
-
-
-	public User(
-		@JsonProperty("username") String username,
-		@JsonProperty("password") String password,
-		@JsonProperty("email") String email
-	) {
-		super(username, password, new LinkedList<>());
-		this.email = email;
-	}
-
-	public User(
-		@JsonProperty("username") String username,
-		@JsonProperty("password") String password,
-		@JsonProperty("email") String email,
-		@JsonProperty("authorities") Collection<? extends GrantedAuthority> authorities
-	) {
-		super(username, password, authorities);
-		this.email = email;
-	}
 
 	public User(String username, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);
 	}
 
-
-
+	@JsonCreator
 	public User(
 		@JsonProperty("username") String username,
 		@JsonProperty("password") String password,
@@ -79,9 +49,9 @@ public class User extends org.springframework.security.core.userdetails.User imp
 		@JsonProperty("accountNonExpired") boolean accountNonExpired,
 		@JsonProperty("credentialsNonExpired") boolean credentialsNonExpired,
 		@JsonProperty("accountNonLocked") boolean accountNonLocked,
-		@JsonProperty("authorities") Collection<? extends GrantedAuthority> authorities
+		@JsonProperty(value = "authorities") Collection<? extends GrantedAuthority> authorities
 	) {
-		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities  != null ? authorities : new LinkedList<>());
 
 		this.email = email;
 		this.token = token;
