@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Document
-public class Duck {
+public class Duck  implements BO {
 
 	@Id
 	public String id = StringUtils.EMPTY;

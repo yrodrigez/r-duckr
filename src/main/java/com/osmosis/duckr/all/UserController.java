@@ -1,6 +1,7 @@
 package com.osmosis.duckr.all;
 
 import com.osmosis.duckr.bll.UserManager;
+import com.osmosis.duckr.bo.BO;
 import com.osmosis.duckr.bo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ public class UserController {
 
 
 	@PostMapping
-	public User register(@RequestBody final User user) {
+	public BO register(@RequestBody final User user) {
 
 		return this.manager.registerUser(user);
 	}
