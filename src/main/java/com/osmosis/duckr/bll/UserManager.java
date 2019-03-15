@@ -30,7 +30,7 @@ public class UserManager {
 		if (isUserRegistered(user)) {
 			Error error = new Error();
 			error.code = "404";
-			error.message = "this email already exists";
+			error.message = "The user with email and username already exists";
 
 			return error;
 		}
@@ -38,31 +38,26 @@ public class UserManager {
 		List<GrantedAuthority> authorityList = new LinkedList<>();
 		authorityList.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-		final User newUser = new User(
-			user.getUsername(),
-			user.getPassword(),
-			user.email,
-			"",
-			LocalDateTime.now(),
-			LocalDateTime.MIN,
-			LocalDateTime.MIN,
-			new LinkedList<>(),
-			new LinkedList<>(),
-			new LinkedList<>(),
-			true,
-			true,
-			true,
-			true,
-			authorityList
-		);
+		final User newUser = new User();
+		newUser.username = user.username;
+		newUser.password = user.password;
+		newUser.email = user.email;
+		newUser.created = LocalDateTime.now();
+		newUser.lastLogin = LocalDateTime.now();
+		newUser.lastLogoff = LocalDateTime.now();
+		newUser.comments = new LinkedList<>();
+		newUser.follows = new LinkedList<>();
+		newUser.duckList = new LinkedList<>();
+		newUser.authorities = authorityList;
+
 
 		return this.repository.save(newUser);
 	}
 
 	private boolean isUserRegistered(final User user) {
-			Optional<User> byUsername = this.repository.findByUsername(user.getUsername());
-			Optional<User> byEmail = this.repository.findByEmail(user.email);
+		Optional<User> byUsername = this.repository.findByUsername(user.username);
+		Optional<User> byEmail = this.repository.findByEmail(user.email);
 
-			return byUsername.isPresent() || byEmail.isPresent();
+		return byUsername.isPresent() || byEmail.isPresent();
 	}
 }
