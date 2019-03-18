@@ -5,12 +5,16 @@ import com.osmosis.duckr.bo.Error;
 import com.osmosis.duckr.bo.User;
 import com.osmosis.duckr.dal.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -20,10 +24,18 @@ import java.util.Optional;
 public class UserManager {
 
 	private final UserRepository repository;
+	private final AuthenticationManager authenticationManager;
+	private final ApplicationContext context;
 
 	@Autowired
-	public UserManager(final UserRepository repository) {
+	public UserManager(final UserRepository repository, final AuthenticationManager authenticationManager,final ApplicationContext context) {
 		this.repository = repository;
+		this.authenticationManager = authenticationManager;
+		this.context = context;
+	}
+
+	public Authentication signUp(final User user) {
+		return this.authenticationManager.authenticate(user);
 	}
 
 	public BO registerUser(final User user) {
@@ -35,12 +47,18 @@ public class UserManager {
 			return error;
 		}
 
-		List<GrantedAuthority> authorityList = new LinkedList<>();
-		authorityList.add(new SimpleGrantedAuthority("ROLE_USER"));
+		List<GrantedAuthority> authorityList = new LinkedList<>(Arrays.asList(
+			new SimpleGrantedAuthority(User.ROLE_PUBLISHER),
+			new SimpleGrantedAuthority(User.ROLE_USER),
+			new SimpleGrantedAuthority(User.ROLE_COMMENTER)
+		));
+
+
 
 		final User newUser = new User();
 		newUser.username = user.username;
-		newUser.password = user.password;
+		PasswordEncoder encoder = this.context.getBean(PasswordEncoder.class);
+		newUser.password = encoder.encode(user.password);
 		newUser.email = user.email;
 		newUser.created = LocalDateTime.now();
 		newUser.lastLogin = LocalDateTime.now();
@@ -49,7 +67,6 @@ public class UserManager {
 		newUser.follows = new LinkedList<>();
 		newUser.duckList = new LinkedList<>();
 		newUser.authorities = authorityList;
-
 
 		return this.repository.save(newUser);
 	}

@@ -7,7 +7,11 @@
     <groupId>r-duckr</groupId>
     <artifactId>r-duckr</artifactId>
     <version>1.0-SNAPSHOT</version>
-
+    <properties>
+        <spring-session-data-mongodb.version>2.1.1.RELEASE</spring-session-data-mongodb.version>
+        <graphql-spring-boot.version>5.0.2</graphql-spring-boot.version>
+        <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -36,17 +40,23 @@
         <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-spring-boot-starter</artifactId>
-            <version>5.0.2</version>
+            <version>${graphql-spring-boot.version}</version>
         </dependency>
         <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java-tools</artifactId>
-            <version>5.2.4</version>
+            <version>${graphql-java-tools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.social</groupId>
             <artifactId>spring-social-facebook</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-mongodb</artifactId>
+            <version>${spring-session-data-mongodb.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-mongodb</artifactId>

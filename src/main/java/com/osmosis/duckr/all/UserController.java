@@ -4,6 +4,7 @@ import com.osmosis.duckr.bll.UserManager;
 import com.osmosis.duckr.bo.BO;
 import com.osmosis.duckr.bo.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,11 @@ public class UserController {
 
 
 	@PostMapping
+	public Authentication signUp(@RequestBody final User user){
+		return this.manager.signUp(user);
+	}
+
+	@PostMapping("/register")
 	public BO register(@RequestBody final User user) {
 
 		return this.manager.registerUser(user);

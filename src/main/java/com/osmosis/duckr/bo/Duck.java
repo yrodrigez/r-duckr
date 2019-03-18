@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
-@Document
+@Document("ducks")
 public class Duck  implements BO {
 
 	@Id
