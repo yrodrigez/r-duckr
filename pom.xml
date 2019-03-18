@@ -8,7 +8,7 @@
     <artifactId>r-duckr</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
-        <spring-session-data-mongodb.version>2.1.1.RELEASE</spring-session-data-mongodb.version>
+        <spring-session-data-mongodb.version>2.1.2.RELEASE</spring-session-data-mongodb.version>
         <graphql-spring-boot.version>5.0.2</graphql-spring-boot.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
     </properties>
@@ -69,7 +69,17 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.session</groupId>
+                <artifactId>spring-session-bom</artifactId>
+                <version>Bean-SR3</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <build>
         <plugins>
             <plugin>

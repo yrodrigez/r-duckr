@@ -1,15 +1,12 @@
 package com.osmosis.duckr.configuration;
 
 
-import com.osmosis.duckr.bll.UserDetailsServiceCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,6 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableConfigurationProperties
 @Profile("!https")
 public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Autowired
+	AuthenticationSuccessHandler successHandler;
 
 	/*@Autowired
 	UserDetailsServiceCustom userDetailsServiceCustom;
@@ -67,7 +67,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 
 			.authorizeRequests()
 			.antMatchers(
-				HttpMethod.POST, "/user/register", "/user"
+				HttpMethod.POST, "/user/register"
 			).permitAll()
 			.anyRequest()
 			.authenticated()
@@ -77,8 +77,9 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 
 			.formLogin()
-			// .loginPage("/index.html")
-			.loginProcessingUrl("/user")
+				.successHandler(successHandler)
+			.loginPage("/login")
+			.loginProcessingUrl("/user/login")
 			.usernameParameter("username")
 			.passwordParameter("password")
 			.permitAll()
