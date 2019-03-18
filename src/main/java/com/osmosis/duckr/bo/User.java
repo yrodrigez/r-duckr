@@ -2,6 +2,7 @@ package com.osmosis.duckr.bo;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.CredentialsContainer;
@@ -32,8 +33,13 @@ public class User implements BO, Authentication, Principal, Serializable, UserDe
 	public LocalDateTime lastLogin;
 	public LocalDateTime lastLogoff;
 
+	@DBRef
 	public List<Duck> duckList = new LinkedList<>();
+	@DBRef
+	public List<Duck> starred = new LinkedList<>();
+	@DBRef
 	public List<Comment> comments = new LinkedList<>();
+	@DBRef
 	public List<User> follows = new LinkedList<>();
 
 	public List<? extends GrantedAuthority> authorities = new LinkedList<>();

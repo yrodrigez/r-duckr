@@ -12,4 +12,6 @@ public class CommentManager {
 	public CommentManager(final CommentRepository repository) {
 		this.repository = repository;
 	}
+
+
 }

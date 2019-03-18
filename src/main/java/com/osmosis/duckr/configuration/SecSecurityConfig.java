@@ -20,26 +20,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Profile("!https")
 public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	private final AuthenticationSuccessHandler successHandler;
+
 	@Autowired
-	AuthenticationSuccessHandler successHandler;
-
-	/*@Autowired
-	UserDetailsServiceCustom userDetailsServiceCustom;
-
-	@Override
-	public void configure(AuthenticationManagerBuilder builder) {
-		builder.authenticationProvider(authenticationProvider());
+	public SecSecurityConfig(AuthenticationSuccessHandler successHandler) {
+		this.successHandler = successHandler;
 	}
-
-
-	@Bean
-	public DaoAuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-		authProvider.setUserDetailsService(userDetailsServiceCustom);
-		authProvider.setPasswordEncoder(passwordEncoder());
-
-		return authProvider;
-	}*/
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -54,8 +40,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 	private static String REALM = "DUCKR";
 
 	@Override
-	protected void configure(final HttpSecurity http)
-		throws Exception {
+	protected void configure(final HttpSecurity http) throws Exception {
 		http.csrf().disable()
 			.authorizeRequests()
 			.antMatchers(
