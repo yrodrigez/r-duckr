@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -28,14 +29,14 @@ public class UserManager {
 	private final ApplicationContext context;
 
 	@Autowired
-	public UserManager(final UserRepository repository, final AuthenticationManager authenticationManager,final ApplicationContext context) {
+	public UserManager(final UserRepository repository, final AuthenticationManager authenticationManager, final ApplicationContext context) {
 		this.repository = repository;
 		this.authenticationManager = authenticationManager;
 		this.context = context;
 	}
 
-	public Authentication signUp(final User user) {
-		return this.authenticationManager.authenticate(user);
+	public Authentication login(final User user, final HttpServletRequest request) {
+		return this.authenticationManager.authenticate(user, request);
 	}
 
 	public BO registerUser(final User user) {
@@ -52,7 +53,6 @@ public class UserManager {
 			new SimpleGrantedAuthority(User.ROLE_USER),
 			new SimpleGrantedAuthority(User.ROLE_COMMENTER)
 		));
-
 
 
 		final User newUser = new User();

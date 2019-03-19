@@ -16,19 +16,18 @@ import java.util.Optional;
 @RequestMapping("ducks")
 public class DuckController {
 
-    final
-    DuckManager manager;
+    private final DuckManager duckManager;
 
     @Autowired
     public DuckController(DuckManager manager) {
-        this.manager = manager;
+        this.duckManager = manager;
     }
 
     @PostMapping
     @RolesAllowed({User.ROLE_USER, User.ROLE_PUBLISHER})
     public Optional<Duck> post(@RequestBody Duck duck, Principal principal) {
         duck.createdBy = principal.getName();
-        return this.manager.post(duck);
+        return this.duckManager.post(duck);
     }
 
     @GetMapping

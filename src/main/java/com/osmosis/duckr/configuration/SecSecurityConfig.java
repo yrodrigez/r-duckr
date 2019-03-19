@@ -1,12 +1,12 @@
 package com.osmosis.duckr.configuration;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,6 +21,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final AuthenticationSuccessHandler successHandler;
+
+	@Bean("authenticationManager")
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
 
 	@Autowired
 	public SecSecurityConfig(AuthenticationSuccessHandler successHandler) {
@@ -37,7 +43,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new CustomBasicAuthenticationEntryPoint();
 	}
 
-	private static String REALM = "DUCKR";
+	private final static String REALM = "DUCKR";
 
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
@@ -62,7 +68,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 
 			.formLogin()
-				.successHandler(successHandler)
+			.successHandler(successHandler)
 			.loginPage("/login")
 			.loginProcessingUrl("/user/login")
 			.usernameParameter("username")
