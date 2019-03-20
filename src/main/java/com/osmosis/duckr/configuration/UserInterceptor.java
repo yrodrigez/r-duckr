@@ -63,18 +63,19 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
 
 	}
 
-	public static boolean isRedirectView(ModelAndView mv) {
+	private static boolean isRedirectView(ModelAndView mv) {
 
 		String viewName = mv.getViewName();
-		if (viewName.startsWith("redirect:/")) {
+
+		if (viewName != null && viewName.startsWith("redirect:/")) {
 			return true;
 		}
 
 		View view = mv.getView();
-		return (view != null && view instanceof SmartView && ((SmartView) view).isRedirectView());
+		return (view instanceof SmartView && ((SmartView) view).isRedirectView());
 	}
 
-	public static boolean isUserLogged() {
+	private static boolean isUserLogged() {
 		try {
 			return !SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser");
 		} catch (Exception e) {
