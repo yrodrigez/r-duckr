@@ -29,7 +29,11 @@ public class UserManager {
 	private final ApplicationContext context;
 
 	@Autowired
-	public UserManager(final UserRepository repository, final AuthenticationManager authenticationManager, final ApplicationContext context) {
+	public UserManager(
+		final UserRepository repository,
+		final AuthenticationManager authenticationManager,
+		final ApplicationContext context
+	) {
 		this.repository = repository;
 		this.authenticationManager = authenticationManager;
 		this.context = context;
@@ -73,7 +77,7 @@ public class UserManager {
 
 	private boolean isUserRegistered(final User user) {
 		Optional<User> byUsername = this.repository.findByUsername(user.username);
-		Optional<User> byEmail = this.repository.findByEmail(user.email);
+		Optional<User> byEmail = this.repository.findByEmailEquals(user.email);
 
 		return byUsername.isPresent() || byEmail.isPresent();
 	}

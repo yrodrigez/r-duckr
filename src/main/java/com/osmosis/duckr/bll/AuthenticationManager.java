@@ -39,15 +39,15 @@ public class AuthenticationManager implements AuthenticationProvider {
 		return Optional.empty();
 	}
 
-	private User.UserCredentials createCredentials(final Authentication authentication) {
+	private User.UserCredentials createCredentials(final User authentication) {
 		User.UserCredentials credentials = new User.UserCredentials();
 		credentials.username = authentication.getName();
-		credentials.password = authentication.getCredentials().toString();
+		credentials.password = authentication.getPassword();
 
 		return credentials;
 	}
 
-	public Authentication authenticate(final Authentication authentication, final HttpServletRequest request) throws AuthenticationException {
+	public Authentication authenticate(final User authentication, final HttpServletRequest request) throws AuthenticationException {
 		final Optional<User> user = checkCredentials(createCredentials(authentication));
 
 		if(user.isPresent()){

@@ -14,34 +14,34 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private RequestCache requestCache = new HttpSessionRequestCache();
+  private RequestCache requestCache = new HttpSessionRequestCache();
 
-    @Override
-    public void onAuthenticationSuccess(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Authentication authentication
-    ) {
+  @Override
+  public void onAuthenticationSuccess(
+    final HttpServletRequest request,
+    final HttpServletResponse response,
+    final Authentication authentication
+  ) {
 
-        SavedRequest savedRequest = requestCache.getRequest(request, response);
+    SavedRequest savedRequest = requestCache.getRequest(request, response);
 
-        if (savedRequest == null) {
-            clearAuthenticationAttributes(request);
-            return;
-        }
-        String targetUrlParam = getTargetUrlParameter();
-        if (isAlwaysUseDefaultTargetUrl()
-                || (targetUrlParam != null
-                && StringUtils.hasText(request.getParameter(targetUrlParam)))) {
-            requestCache.removeRequest(request, response);
-            clearAuthenticationAttributes(request);
-            return;
-        }
-
-        clearAuthenticationAttributes(request);
+    if (savedRequest == null) {
+      clearAuthenticationAttributes(request);
+      return;
+    }
+    String targetUrlParam = getTargetUrlParameter();
+    if (isAlwaysUseDefaultTargetUrl()
+      || (targetUrlParam != null
+      && StringUtils.hasText(request.getParameter(targetUrlParam)))) {
+      requestCache.removeRequest(request, response);
+      clearAuthenticationAttributes(request);
+      return;
     }
 
-    public void setRequestCache(RequestCache requestCache) {
-        this.requestCache = requestCache;
-    }
+    clearAuthenticationAttributes(request);
+  }
+
+  public void setRequestCache(RequestCache requestCache) {
+    this.requestCache = requestCache;
+  }
 }
